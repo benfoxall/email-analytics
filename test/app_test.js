@@ -7,6 +7,7 @@ describe('app', function(){
 		request(app)
 			.get('/')
 			.expect('Content-Type', /text/)
-			.expect(200, done);
+			.expect(200, /hello world/)
+			.end(done);
 	})
 })
