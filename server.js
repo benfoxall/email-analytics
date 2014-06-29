@@ -8,7 +8,7 @@ require("redis-scanstreams")(redis);
 
 if (process.env.REDISTOGO_URL) {
 	var redisURL = url.parse(process.env.REDISTOGO_URL);
-	
+
 	client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
 	client.auth(redisURL.auth.split(":")[1]);
 } else {
@@ -17,7 +17,6 @@ if (process.env.REDISTOGO_URL) {
 
 
 var
-	client = redis.createClient(process.env.REDISTOGO_URL),
 	app = express();
 
 var port = process.env.PORT || 3000;
