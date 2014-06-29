@@ -23,8 +23,7 @@ var
 var port = process.env.PORT || 3000;
 
 app.use(bodyParser.json())
-
-// app.post(basicAuth('testUser', 'testPass'));
+app.use(bodyParser.urlencoded())
 
 app.use(express.static(__dirname + '/public'));
 
