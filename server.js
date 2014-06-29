@@ -1,8 +1,18 @@
 var express = require('express'),
 	bodyParser = require('body-parser'),
-	redis = require("redis");
+	redis = require("redis"),
+	client;
 
 require("redis-scanstreams")(redis);
+
+if (process.env.REDISTOGO_URL) {
+	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	client = redis.createClient(rtg.port, rtg.hostname);
+	client.auth(rtg.auth.split(":")[1]);
+} else {
+    client = redis.createClient();
+}
+
 
 var
 	client = redis.createClient(process.env.REDISTOGO_URL),
@@ -25,7 +35,7 @@ app.post('/set/:key', function(req,res){
 		value = req.param('value'),
 		now = +new Date;
 
-	if(value)client.zadd(key, -now, [now,value].join(' '))
+	if(value) client.zadd(key, -now, [now,value].join(' '))
 
 	res.send(
 		value ? 200 : 403,
