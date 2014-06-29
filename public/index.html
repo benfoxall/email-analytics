@@ -91,7 +91,7 @@ function loadData(element, key){
 			});
 
 		  x.domain(d3.extent(data, function(d) { return d.time; }));
-		  y.domain(d3.extent(data, function(d) { return d.count; }));
+		  y.domain([0,d3.max(data, function(d) { return d.count; })]);
 
 		  svg.append("g")
 		      .attr("class", "x axis")
