@@ -4,7 +4,7 @@
   "description": "storage for analytics about my email\"",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"no tests as yet\" && exit 0",
     "start": "node server.js"
   },
   "author": "Ben Foxall",
