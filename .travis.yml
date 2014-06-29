@@ -1,3 +1,10 @@
- language: node_js
- node_js:
-   - "0.10"
+language: node_js
+node_js:
+- '0.10'
+deploy:
+  provider: heroku
+  api_key:
+    secure: HM53ALZGJUrw9YKlU9tzAJ+W96uMgEE/Pla+FUROeC2aeMNuTkKRVmuSImX4iv0u83UjvlToOu+pLGqYqULE5UJdIx5TnXaJxn/UyGzlWvhN4NNQOUD3K4Bk8qhtUY2SndmTEjSPpqVfH83zK+71pOGB2EQCSuBhhZZO6+0WVwA=
+  app: email-stats
+  on:
+    repo: benfoxall/email-analytics
