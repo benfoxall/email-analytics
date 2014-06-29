@@ -1,5 +1,6 @@
 var express = require('express'),
 	bodyParser = require('body-parser'),
+	basicAuth = require('basic-auth-connect'),
 	redis = require("redis"),
 	url = require('url'),
 	client;
@@ -23,14 +24,19 @@ var port = process.env.PORT || 3000;
 
 app.use(bodyParser.json())
 
+// app.post(basicAuth('testUser', 'testPass'));
+
 app.use(express.static(__dirname + '/public'));
 
+var protect = (process.env.USER && process.env.PASS) ?
+	basicAuth(process.env.USER, process.env.PASS) :
+	function(_,_,next){return next()};
 
 /* 
 	Set a value for a given key
 	POST /set/keyname {value:20 }
 */
-app.post('/set/:key', function(req,res){
+app.post('/set/:key', protect, function(req,res){
 
 	var key = req.param('key'),
 		value = req.param('value'),
@@ -45,7 +51,7 @@ app.post('/set/:key', function(req,res){
 
 })
 
-app.post('/clear/:key', function(req,res){
+app.post('/clear/:key', protect, function(req,res){
 	client.del(req.param('key'))
 	res.send({status:'cleared'})
 })
