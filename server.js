@@ -65,6 +65,20 @@ app.get('/data/:key', function(req, res){
 		res.send(keys)	
 	})
 	
+})
+
+// all keys on the system
+app.get('/keys', function(req, res){
+
+	var keys = [];
+
+	client.scan({count:100})
+	.on('data', function(s){
+		keys.push(s);
+	})
+	.on('end', function(){
+		res.send(keys)	
+	});
 
 })
 
