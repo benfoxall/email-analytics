@@ -1,8 +1,12 @@
-var http = require('http');
+var express = require('express'),
+	app = express();
 
 var port = process.env.PORT || 3000;
 
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World (through travis)\n');
-}).listen(port);
+app.get('/', function(req, res){
+  res.send('hello world (express)');
+});
+
+app.listen(port);
+
+module.exports = app;
