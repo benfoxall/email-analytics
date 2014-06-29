@@ -4,9 +4,16 @@
   "description": "storage for analytics about my email\"",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"no tests as yet\" && exit 0",
+    "test": "./node_modules/.bin/mocha",
     "start": "node server.js"
   },
   "author": "Ben Foxall",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.20.1",
+    "supertest": "~0.13.0"
+  },
+  "dependencies": {
+    "express": "~4.4.5"
+  }
 }
