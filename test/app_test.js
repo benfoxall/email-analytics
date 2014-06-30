@@ -9,7 +9,7 @@ describe('app', function(){
 		request(app)
 			.get('/')
 			.expect('Content-Type', /text/)
-			.expect(200, /hello/)
+			.expect(200, /Inbox Status/)
 			.end(done);
 	})
 
