@@ -16,7 +16,7 @@ if (process.env.REDISTOGO_URL) {
     client = redis.createClient();
 }
 
-
+var LIST_LENGTH = 500;
 var
 	app = express();
 
@@ -41,35 +41,35 @@ app.post('/set/:key', protect, function(req,res){
 		value = req.param('value'),
 		now = +new Date;
 
-	if(value) client.zadd(key, -now, [now,value].join(' '))
+	var listkey = 'stat-' + key;
+	if(value) client.lpush(listkey, [now,value].join(' '), redis.print)
 
 	res.send(
 		value ? 200 : 403,
 		{status: value ? 'ok' : 'missing key'}
 	);
 
+	client.ltrim(listkey, 0, LIST_LENGTH)
+
 })
 
 app.post('/clear/:key', protect, function(req,res){
-	client.del(req.param('key'))
+	var listkey = 'stat-' + req.param('key');
 	res.send({status:'cleared'})
 })
 
 app.get('/data/:key', function(req, res){
 
-	var keys = [];
-
-	client.zscan(req.param('key'), {count: 3})
-	.on('data', function(s){
-		keys.push(
-			s.key.split(' ').map(function(n){
+	var listkey = 'stat-' + req.param('key');
+	client.lrange(listkey,0, LIST_LENGTH, function(err, resp){
+		var keys = resp.map(function(item){
+			return item.split(' ').map(function(n){
 				return parseInt(n,10)
-			}));
+			});
+		});
+		res.send(keys)
 	})
-	.on('end', function(){
-		res.send(keys)	
-	})
-	
+
 })
 
 // all keys on the system
@@ -77,9 +77,9 @@ app.get('/keys', function(req, res){
 
 	var keys = [];
 
-	client.scan({count:100})
+	client.scan({pattern:'stat-*'})
 	.on('data', function(s){
-		keys.push(s);
+		keys.push(s.substr(5));
 	})
 	.on('end', function(){
 		res.send(keys)	
