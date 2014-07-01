@@ -55,7 +55,7 @@ app.post('/set/:key', protect, function(req,res){
 
 app.post('/clear/:key', protect, function(req,res){
 	var listkey = 'stat-' + req.param('key');
-	client.del(req.param('key'))
+	client.del(listkey)
 	res.send({status:'cleared'})
 })
 
